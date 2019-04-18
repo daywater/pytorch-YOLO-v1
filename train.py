@@ -27,15 +27,15 @@ class test_dataset_loaded(DATA.Dataset):
         return self.img.size()[0]
 
 def main():
-    epoch=50
+    epoch=80
     batchsize=16
-    lr=0.0001
+    lr=0.00005
 
     net=models.Yolov1_vgg16bn(pretrained=True)
 
     net.cuda()
     #
-    net.load_state_dict(torch.load("saved_model29.pth"))
+    net.load_state_dict(torch.load("train_model66.pth"))
     #
     net.train()
     print("model loaded")
@@ -56,15 +56,20 @@ def main():
     """#
 
     print("loaded")
-    for e in range(29,epoch):
+    for e in range(66,epoch):
 
         if e == 30:
             lr=0.0001
         if e == 40:
+            lr=0.00005
+        if e == 60:
+            lr=0.00005
+        if e == 80:
             lr=0.00001
         runningloss=0.
         test_loss=0.
         count=0
+
 
         for i,(images,targets) in enumerate(training_data_loader):
 
@@ -81,7 +86,7 @@ def main():
             batch_loss.backward()
             optimizer.step()
 
-            runningloss=runningloss+batch_loss
+            runningloss=runningloss+float(batch_loss)
             count=count+1
 
         """#
